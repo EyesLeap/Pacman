@@ -6,14 +6,14 @@ import copy
 import sys
 import os
 import ConstantsForGame as CFG
+from MovingObject import MovingObject
 
 
-square_size = 25
 #spriteOffset = square * (1 - spriteRatio) * (1/2)
 class RenderSystem:
     def __init__(self, gb, screen):
         self.pacman_sprite = pygame.image.load("ElementImages/pacman_start_sprite.png")
-        self.pacman_sprite = pygame.transform.scale(self.pacman_sprite, (37.5, 37.5))
+        self.pacman_sprite = pygame.transform.scale(self.pacman_sprite, (CFG.SQUARE_SIZE * 1.5, CFG.SQUARE_SIZE * 1.5))
         self.screen = screen
         self.gameBoard = gb
     def drawGameBoard(self):
@@ -34,6 +34,14 @@ class RenderSystem:
                     pygame.draw.rect(self.screen, CFG.PELLET_COLOR,
                                      (j * CFG.SQUARE_SIZE + CFG.SQUARE_SIZE//2 - 1,
                                       i * CFG.SQUARE_SIZE + CFG.SQUARE_SIZE//2, CFG.SQUARE_SIZE//4, CFG.SQUARE_SIZE//4))
+
+    def renderTunnelEnds(self):
+        tunnel_end1 = MovingObject(0,17)
+        tunnel_end2 = MovingObject(26.75,17)
+
+        self.renderNearestTiles(tunnel_end1)
+        self.renderNearestTiles(tunnel_end2)
+
 
     def renderNearestTiles(self, moving_object):
         #moving_object.calculateColumnAndRow()
@@ -60,6 +68,8 @@ class RenderSystem:
                                           i * CFG.SQUARE_SIZE + CFG.SQUARE_SIZE // 2, CFG.SQUARE_SIZE // 4, CFG.SQUARE_SIZE // 4))
 
     def renderPacman(self, pacman):
+
+
         self.screen.blit(pacman.pacman_sprite, (pacman.cur_column*CFG.SQUARE_SIZE-4,
                                               pacman.cur_row*CFG.SQUARE_SIZE-3.125, CFG.SQUARE_SIZE,CFG.SQUARE_SIZE))
         #pygame.draw.rect(self.screen, (255, 255, 255), (pacman.cur_pos_X, pacman.cur_pos_Y, 3,3), 1)

@@ -16,6 +16,7 @@ BORDER_RIGHT = 27
 EMPTY_TILE = 1
 PELLET = 2
 WALL = 3
+CAGE_GATE = 5
 
 GAME_FPS = 40
 
@@ -33,6 +34,18 @@ GHOST_SCATTER_MODE = 1
 GHOST_CHASE_MODE = 2
 GHOST_FRIGHTENED_MODE = 3
 GHOST_EATEN_MODE = 4
+GHOST_RELEASING_MODE = 5
+
+RIGHT_UPPER_CORNER = (27,4)
+LEFT_UPPER_CORNER = (1,4)
+RIGHT_BOTTOM_CORNER = (27,31)
+LEFT_BOTTOM_CORNER = (1,31)
+
+IN_CAGE_MODE = 0
+
+PACMAN_MOUTH_CLOSED = 0
+PACMAN_MOUTH_OPENED1 = 1
+PACMAN_MOUTH_OPENED2 = 2
 
 
 original_game_board = [
@@ -73,3 +86,26 @@ original_game_board = [
         [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
         [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
     ]
+
+#When leaving their cage, the ghosts move along a certain route:
+
+ORANGE_GHOST_ROUTE = [()] * 25
+PINK_GHOST_ROUTE = [()] * 42
+CYAN_GHOST_ROUTE = [()] * 42
+
+
+CAGE_RELEASING_ROUTE1_LENGTH = 17
+CAGE_RELEASING_ROUTE2_LENGTH = 25
+
+for i in range (CAGE_RELEASING_ROUTE1_LENGTH):
+        CYAN_GHOST_ROUTE[i] = (11.5 + (i * 0.125), 17)
+        PINK_GHOST_ROUTE[i] = (15.5 - (i * 0.125), 17)
+
+
+for i in range(CAGE_RELEASING_ROUTE2_LENGTH):
+        ORANGE_GHOST_ROUTE[i] = (13.5, 17 - (i * 0.125))
+        PINK_GHOST_ROUTE[i + CAGE_RELEASING_ROUTE1_LENGTH] = (13.5, 17 - (i * 0.125))
+        CYAN_GHOST_ROUTE[i + CAGE_RELEASING_ROUTE1_LENGTH] = (13.5, 17 - (i * 0.125))
+
+
+# ------------------------------------------------------------
