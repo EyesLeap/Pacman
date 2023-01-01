@@ -13,13 +13,17 @@ from MusicSystem import MusicSystem
 import os
 # 28 Across 31 Tall 1: Empty Space 2: Tic-Tak 3: Wall 4: Ghost safe-space 5: Special Tic-Tak
 import ConstantsForGame as CFG
+from GameManager import GameManager
 
 # game_board = copy.deepcopy(original_game_board)
-GB = GameBoard()
-(width, height) = (
-len(GB.current_game_board[0]) * CFG.SQUARE_SIZE, len(GB.current_game_board) * CFG.SQUARE_SIZE)  # Game screen
+game_board = GameBoard()
+
+
+width = len(game_board.current_game_board[0]) * CFG.SQUARE_SIZE
+height = len(game_board.current_game_board) * CFG.SQUARE_SIZE
+#(width, height) = (len(game_board.current_game_board[0]) * CFG.SQUARE_SIZE, len(game_board.current_game_board) * CFG.SQUARE_SIZE)  # Game screen
 screen = pygame.display.set_mode((width, height))
-pacman = Pacman(GB)
+pacman = Pacman()
 red_ghost = Ghost(CFG.RED_GHOST)
 cyan_ghost = Ghost(CFG.CYAN_GHOST)
 orange_ghost = Ghost(CFG.ORANGE_GHOST)
@@ -32,8 +36,6 @@ for ghost in ghosts:
 
 pygame.init()
 clock = pygame.time.Clock()
-rs = RenderSystem(GB, screen)
-
 
 class Game:
 
@@ -41,87 +43,84 @@ class Game:
         self.pressed_button_buffer = None
         self.game_ticks = 0
         self.current_amount_of_active_ghosts = 0
-
-    def startPhase(self):
-        if self.game_ticks < CFG.GAME_FPS * 4:  # 4 SECONDS DURATION
-            self.game_ticks += 1
-            return True
-        elif self.game_ticks < CFG.GAME_FPS * 4 + 1:
-            rs.drawGameBoard()
-            self.game_ticks += 1
-            MusicSystem.playSirenMusic(1)
-            self.releaseGhost()
-            return False
-
-    def releaseGhost(self):
-        self.current_amount_of_active_ghosts += 1
-        ghosts[2].current_mode = CFG.GHOST_RELEASING_MODE
-
-        pass
+        self.render_system = RenderSystem(game_board, screen)
+        self.game_manager = GameManager(ghosts, ghosts[0], pacman, self.render_system, game_board, self.game_ticks)
 
 
     def runGame(self):
 
-        rs.drawGameBoard()
-        rs.renderPacman(pacman)
-        rs.renderPacmanArrow(pacman)
-        rs.renderGhosts(ghosts)
-        rs.drawReadyText()
-        MusicSystem.playBeginningSound()
+        self.render_system.drawGameBoard(pacman.lives_count)
+        self.render_system.renderPacman(pacman)
+        self.render_system.renderPacmanArrow(pacman)
+        self.render_system.renderGhosts(ghosts)
+        self.render_system.drawReadyText()
 
+        MusicSystem.playBeginningSound()
         #GAME_CYCLE
         while True:
 
-            if (self.game_ticks % 3) == 0:
-                pacman.changeCurrentSpriteState()
-                #print(pacman.sprite_state)
+            self.game_manager.animateGhostsAndPacman()
+            self.render_system.displayCurrentScore(pacman.current_score)
+            self.render_system.displayHighScore(self.game_manager.score_system.loadHighScore())
 
-            if self.game_ticks == CFG.GAME_FPS * 10:  # 4 SECONDS DURATION
-                ghosts[1].current_mode = CFG.GHOST_RELEASING_MODE
-            if self.game_ticks == CFG.GAME_FPS * 15:  # 4 SECONDS DURATION
-                ghosts[3].current_mode = CFG.GHOST_RELEASING_MODE
-
-            if self.startPhase() == True:
+            if self.game_manager.startPhase(pacman.lives_count) == True:
                 clock.tick(CFG.GAME_FPS)
             else:
-                rs.renderNearestTiles(pacman)
+                self.game_manager.ghostReleasingQueue()
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
+                        self.game_manager.sendScoreToScoreSystem()
                         sys.exit()
                     elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_a:
-                            pacman.new_dir = CFG.LEFT
+                            pacman.new_direction = CFG.LEFT
                         elif event.key == pygame.K_d:
-                            pacman.new_dir = CFG.RIGHT
+                            pacman.new_direction = CFG.RIGHT
                         elif event.key == pygame.K_w:
-                            pacman.new_dir = CFG.UP
+                            pacman.new_direction = CFG.UP
                             #print("GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
                             #print(GB.getTileValue(13, 15), GB.getTileValue(14, 15))
                         elif event.key == pygame.K_s:
-                            pacman.new_dir = CFG.DOWN
+                            pacman.new_direction = CFG.DOWN
 
-                self.moveGhosts()
-                rs.renderPacman(pacman)
-                rs.renderPacmanArrow(pacman)
-                rs.renderGhosts(ghosts)
+                self.render_system.renderNearestTiles(pacman)
+
+                self.game_manager.switchAllGhostsModes()
+                self.game_manager.moveAllGhosts()
+                self.game_manager.checkGhostPacmanCollision()
+
+                self.render_system.renderPacman(pacman)
+                self.render_system.renderPacmanArrow(pacman)
+                self.render_system.renderPacmanLives(pacman.lives_count)
+                self.render_system.renderGhosts(ghosts)
+
+
+
                 # rs.drawGrid()
 
-                if (pacman.move(GB) == CFG.CROSSED_BORDER):
-                    print(pacman.cur_column, pacman.cur_row)
-                    rs.renderTunnelEnds()
+                if (pacman.move(game_board) == CFG.CROSSED_TUNNEL):
+                    self.render_system.renderTunnelEnds()
 
-            pacman.collectPellet(GB)
+
+                if (pacman.IsAlive == False):
+                    self.game_manager.restartGameWhenDead()
+
+                print("PELLETS: ", game_board.pellets_count)
+                if (game_board.pellets_count == 0):
+
+                    self.game_manager.startNextLevel()
+
+
+
+            pacman.collectPellet(game_board)
+            pacman.eatPowerPill(game_board)
+            self.game_manager.powerPillUsing()
+
             pygame.display.update()
             clock.tick(CFG.GAME_FPS)
-            # print(self.game_ticks)
-            self.game_ticks += 1
 
-    def moveGhosts(self):
-        for ghost in ghosts:
-            if (ghost.move(pacman, GB) == CFG.CROSSED_BORDER):
-                rs.renderTunnelEnds()
-            rs.renderNearestTiles(ghost)
-            # ghost.calculateTargetPath(pacman, GB)
+            self.game_manager.game_ticks += 1
+
 
 
 game = Game()
