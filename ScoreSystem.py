@@ -1,5 +1,4 @@
 class ScoreSystem:
-
     def __init__(self):
         self.high_score = 0
 
@@ -13,7 +12,6 @@ class ScoreSystem:
 
     def loadHighScore(self):
         with open("HighScore.txt", "r") as file:
-            #print(file.readline())
             self.high_score = file.readline()
             self.high_score = int(self.high_score)
 

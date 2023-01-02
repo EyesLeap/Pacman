@@ -9,7 +9,6 @@ import ConstantsForGame as CFG
 from MovingObject import MovingObject
 
 
-#spriteOffset = square * (1 - spriteRatio) * (1/2)
 class RenderSystem:
     def __init__(self, gb, screen):
         self.pacman_sprite = pygame.image.load("ElementImages/pacman_start_sprite.png")
@@ -34,7 +33,6 @@ class RenderSystem:
                 tile_number+= 1
 
                 if self.gameBoard.current_game_board[i][j] == CFG.PELLET:
-                    #pygame.draw.rect(self.screen, (255, 255, 255), (pacman.cur_pos_X, pacman.cur_pos_Y, 3, 3), 1)
                     pygame.draw.rect(self.screen, CFG.PELLET_COLOR,
                                      (j * CFG.SQUARE_SIZE + CFG.SQUARE_SIZE//2 - 1,
                                       i * CFG.SQUARE_SIZE + CFG.SQUARE_SIZE//2, CFG.SQUARE_SIZE//4, CFG.SQUARE_SIZE//4))
@@ -53,7 +51,6 @@ class RenderSystem:
 
 
     def renderNearestTiles(self, moving_object):
-        #moving_object.calculateColumnAndRow()
         cur_column = math.floor(moving_object.current_column)
         cur_row = math.floor(moving_object.current_row)
 
@@ -71,7 +68,6 @@ class RenderSystem:
                     tile_number += 1
 
                     if self.gameBoard.current_game_board[i][j] == CFG.PELLET:
-                        # pygame.draw.rect(self.screen, (255, 255, 255), (pacman.cur_pos_X, pacman.cur_pos_Y, 3, 3), 1)
                         pygame.draw.rect(self.screen, CFG.PELLET_COLOR,
                                          (j * CFG.SQUARE_SIZE + CFG.SQUARE_SIZE // 2 - 1,
                                           i * CFG.SQUARE_SIZE + CFG.SQUARE_SIZE // 2, CFG.SQUARE_SIZE // 4, CFG.SQUARE_SIZE // 4))
@@ -86,7 +82,6 @@ class RenderSystem:
 
         self.screen.blit(pacman.pacman_sprite, (pacman.current_column * CFG.SQUARE_SIZE - 4,
                                                 pacman.current_row * CFG.SQUARE_SIZE - 3.125, CFG.SQUARE_SIZE, CFG.SQUARE_SIZE))
-        #pygame.draw.rect(self.screen, (255, 255, 255), (pacman.cur_pos_X, pacman.cur_pos_Y, 3,3), 1)
 
     def renderPacmanLives(self, pacman_lives_count):
         pygame.draw.rect(self.screen, CFG.BLACK_COLOR, pygame.Rect(10, 860, 1000, 50))
@@ -164,7 +159,6 @@ class RenderSystem:
                              ((3 + i) * CFG.SQUARE_SIZE, 5, CFG.SQUARE_SIZE, CFG.SQUARE_SIZE))
 
 
-
         score_copy = copy.deepcopy(score)
         index = 0
 
@@ -211,47 +205,3 @@ class RenderSystem:
             index += 1
 
 
-        '''
-        index = 0
-        scoreStart = 5
-        highScoreStart = 11
-        for i in range(scoreStart, scoreStart + len(textOneUp)):
-            tileImage = pygame.image.load(TextPath + textOneUp[index])
-            tileImage = pygame.transform.scale(tileImage, (square, square))
-            screen.blit(tileImage, (i * square, 4, square, square))
-            index += 1
-        score = str(self.score)
-        if score == "0":
-            score = "00"
-        index = 0
-        for i in range(0, len(score)):
-            digit = int(score[i])
-            tileImage = pygame.image.load(TextPath + "tile0" + str(32 + digit) + ".png")
-            tileImage = pygame.transform.scale(tileImage, (square, square))
-            screen.blit(tileImage, ((scoreStart + 2 + index) * square, square + 4, square, square))
-            index += 1
-
-        index = 0
-        for i in range(highScoreStart, highScoreStart + len(textHighScore)):
-            tileImage = pygame.image.load(TextPath + textHighScore[index])
-            tileImage = pygame.transform.scale(tileImage, (square, square))
-            screen.blit(tileImage, (i * square, 4, square, square))
-            index += 1
-
-        highScore = str(self.highScore)
-        if highScore == "0":
-            highScore = "00"
-        index = 0
-        for i in range(0, len(highScore)):
-            digit = int(highScore[i])
-            tileImage = pygame.image.load(TextPath + "tile0" + str(32 + digit) + ".png")
-            tileImage = pygame.transform.scale(tileImage, (square, square))
-            screen.blit(tileImage, ((highScoreStart + 6 + index) * square, square + 4, square, square))
-            index += 1
-
-    def drawGrid(self):
-        for i in range(3,34):
-            for j in range(28):
-                pygame.draw.rect(self.screen, (255,255,255),(j*CFG.SQUARE_SIZE, i*CFG.SQUARE_SIZE, CFG.SQUARE_SIZE, CFG.SQUARE_SIZE), 1)
-
-        '''

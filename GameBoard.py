@@ -13,14 +13,12 @@ class GameBoard:
     def __init__(self):
         self.current_game_board = copy.deepcopy(CFG.original_game_board)
         self.pellets_count = 240
-        #GameBoard.current_game_board = copy.deepcopy(CFG.original_game_board)
 
     def getTileValue(self, column, row):
         return self.current_game_board[row][column]
 
     def setTileValue(self, column, row, value):
         self.current_game_board[row][column] = value
-
 
     def restartGameBoard(self):
         self.pellets_count = 240

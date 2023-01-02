@@ -36,19 +36,10 @@ class GameManager:
         self.current_all_ghosts_mode = CFG.ALL_GHOSTS_SCATTER_MODE
         self.all_ghosts_mode_timer = 0
 
-
     def switchAllGhostsModes(self):
-
         #Chase Mode duration = 20 seconds
         #Scatter Mode duration = 5 seconds
         if self.game_ticks % CFG.GAME_SECOND == 0:
-            print("SECOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOND")
-            print("SECOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOND")
-            print("SECOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOND")
-            print("SECOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOND")
-            print(self.all_ghosts_mode_timer)
-            print("SECOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOND")
-
             self.all_ghosts_mode_timer += 1
 
         if self.current_all_ghosts_mode == CFG.ALL_GHOSTS_SCATTER_MODE:
@@ -63,7 +54,6 @@ class GameManager:
                 self.all_ghosts_mode_timer = 0
                 self.current_all_ghosts_mode = CFG.ALL_GHOSTS_SCATTER_MODE
 
-
     def ghostHasNonSwitchableStrategy(self, ghost):
         if ghost.strategy_index == CFG.GHOST_EATEN_STRATEGY:
             return True
@@ -76,7 +66,6 @@ class GameManager:
         else:
             return False
 
-
     def setAllGhostsScatterMode(self):
         for ghost in self.ghosts:
 
@@ -88,7 +77,6 @@ class GameManager:
                 ghost.prev_strategy_index = ghost.strategy_index
                 ghost.setGhostStrategyIndexToScatter()
 
-
     def setAllGhostsChaseMode(self):
         for ghost in self.ghosts:
             if self.ghostHasNonSwitchableStrategy(ghost):
@@ -98,7 +86,6 @@ class GameManager:
             else:
                 ghost.prev_strategy_index = ghost.strategy_index
                 ghost.setGhostStrategyIndexToChase()
-
 
     def setAllGhostsFrightenedMode(self):
         for ghost in self.ghosts:
@@ -134,7 +121,6 @@ class GameManager:
 
             ghost.strategy_index = ghost.prev_strategy_index
 
-
     def startPhase(self, pacman_lives_count):
         if self.game_ticks < CFG.GAME_SECOND * 4:  # 4 SECONDS DURATION
             self.game_ticks += 1
@@ -147,29 +133,19 @@ class GameManager:
             MusicSystem.playSirenMusic(CFG.SIREN_MUSIC1)
             return False
 
-
     def pauseGame(self, milliseconds):
         pygame.time.delay(milliseconds)
 
     def showPacmanDeath(self):
         self.pauseGame(500)
-        #pygame.draw.rect(self.render_system.screen, CFG.BLACK_COLOR,
-        #                 pygame.Rect(self.pacman.current_column * CFG.SQUARE_SIZE - 4,
-         #                            self.pacman.current_row * CFG.SQUARE_SIZE - 3.125, CFG.SQUARE_SIZE,
-          #                           CFG.SQUARE_SIZE))
         MusicSystem.stopPlayingMusic()
         MusicSystem.playPacmanDeathSound()
         for i in range(11):
             self.pacman.animatePacman()
-            #self.render_system.screen.fill((CFG.BLACK_COLOR))
-            #self.render_system.renderNearestTiles(self.pacman)
             self.render_system.drawGameBoard(self.pacman.lives_count)
-            #self.render_system.renderGhosts(self.ghosts)
             self.render_system.renderPacman(self.pacman)
             pygame.display.update()
             self.pauseGame(100)
-            #print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", self.pacman.death_sprite_state)
-
 
     def animateGhostsAndPacman(self):
         if (self.game_ticks % 5) == 0:
@@ -180,13 +156,11 @@ class GameManager:
         if (self.game_ticks % 5) == 0:
             self.printGhostsInfo()
 
-
     def moveAllGhosts(self):
         for ghost in self.ghosts:
             if (self.moveGhost(self.pacman, self.game_board, ghost) == CFG.CROSSED_TUNNEL):
                 self.render_system.renderTunnelEnds()
             self.render_system.renderNearestTiles(ghost)
-
 
     def convertStrategyToText(self, strategy_index):
         if strategy_index == CFG.GHOST_CAGE_STRATEGY:
@@ -212,31 +186,28 @@ class GameManager:
         elif strategy_index == CFG.GHOST_CLYDE_CHASE_STRATEGY:
             return "CLYDE_CHASE_STRATEGY"
 
-
     def printGhostsInfo(self):
         print("PACMAN POWER PILL = ", self.pacman.powerPillActivated)
         print("POWER PILL TIMER =  ", self.pacman.power_pill_timer)
         for ghost in self.ghosts:
             if ghost.ghost_type == CFG.RED_GHOST:
-                print("1. RED_GHOST", self.convertStrategyToText(ghost.strategy_index), "НАПУГАН - ",
+                print("1. RED_GHOST", self.convertStrategyToText(ghost.strategy_index), "FRIGHTENED? - ",
                       ghost.IsFrightened, "  ", ghost.current_column, ":", ghost.current_row)
             elif ghost.ghost_type == CFG.ORANGE_GHOST:
-                print("2. ORANGE_GHOST", self.convertStrategyToText(ghost.strategy_index), "НАПУГАН - ",
+                print("2. ORANGE_GHOST", self.convertStrategyToText(ghost.strategy_index), "FRIGHTENED? - ",
                       ghost.IsFrightened, "  ", ghost.current_column, ":", ghost.current_row)
             elif ghost.ghost_type == CFG.CYAN_GHOST:
-                print("3. CYAN_GHOST", self.convertStrategyToText(ghost.strategy_index), "НАПУГАН - ",
+                print("3. CYAN_GHOST", self.convertStrategyToText(ghost.strategy_index), "FRIGHTENED? - ",
                       ghost.IsFrightened, "  ", ghost.current_column, ":", ghost.current_row)
             elif ghost.ghost_type == CFG.PINK_GHOST:
-                print("4. PINK_GHOST", self.convertStrategyToText(ghost.strategy_index), "НАПУГАН - ",
+                print("4. PINK_GHOST", self.convertStrategyToText(ghost.strategy_index), "FRIGHTENED? - ",
                       ghost.IsFrightened, "  ", ghost.current_column, ":", ghost.current_row)
 
             print("")
         print("\n")
 
-
     def releaseGhost(self, ghost):
         ghost.strategy_index = CFG.GHOST_RELEASING_STRATEGY
-
 
     def ghostReleasingQueue(self):
         if self.game_ticks == CFG.GAME_SECOND * 10:
@@ -245,7 +216,6 @@ class GameManager:
             self.releaseGhost(self.ghosts[1])
         elif self.game_ticks == CFG.GAME_FPS * 19:
             self.releaseGhost(self.ghosts[3])
-
 
     def checkGhostPacmanCollision(self):
         for ghost in self.ghosts:
@@ -261,12 +231,9 @@ class GameManager:
             elif DistanceBetweenPacmanGhost <= 1 and ghost.IsFrightened:
                 self.pacman.eatGhost(ghost)
 
-
     def takeUpStartPositions(self):
         self.placeAllGhostsOnStartPosition()
         self.pacman.placeOnStartPosition()
-        pass
-
 
     def restartGameWhenDead(self):
         self.game_ticks = CFG.GAME_SECOND * 4 + 1
@@ -283,8 +250,6 @@ class GameManager:
             exit()
 
         else:
-
-
             self.takeUpStartPositions()
             self.render_system.drawReadyText()
             self.render_system.renderPacman(self.pacman)
@@ -296,16 +261,15 @@ class GameManager:
             MusicSystem.playSirenMusic(CFG.SIREN_MUSIC1)
             self.render_system.drawGameBoard(self.pacman.lives_count)
 
-
     def placeAllGhostsOnStartPosition(self):
         for ghost in self.ghosts:
             ghost.setStartPosition()
             ghost.IsFrightened = False
 
-
     def powerPillUsing(self):
         if self.pacman.powerPillActivated == False:
             return
+
         MusicSystem.playPowerPillMusic()
 
         if self.pacman.power_pill_timer == 0:
@@ -325,7 +289,6 @@ class GameManager:
             self.pacman.IsPowerPillEnding = False
             self.pacman.power_pill_timer = 0
 
-
     def startNextLevel(self):
         MusicSystem.stopPlayingMusic()
         CFG.SCATTER_MODE_DURATION -= 1
@@ -335,7 +298,6 @@ class GameManager:
         self.render_system.renderPacman(self.pacman)
         self.render_system.renderPacmanArrow(self.pacman)
         pygame.display.update()
-        #pygame.time.de
         self.pauseGame(2000)
 
         self.game_board.restartGameBoard()
@@ -351,7 +313,6 @@ class GameManager:
         self.pauseGame(2000)
         MusicSystem.playSirenMusic(CFG.SIREN_MUSIC1)
         self.render_system.drawGameBoard(self.pacman.lives_count)
-        pass
 
     def moveGhost(self, pacman, game_board, ghost):
         ghost.calculateRoundedColumnRow()

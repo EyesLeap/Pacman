@@ -21,7 +21,6 @@ class MovingObject(GameObject):
         IsWallBelow = game_board.getTileValue(col, row + 1) == CFG.WALL
         IsWallOnTheRight = game_board.getTileValue(col + 1, row) == CFG.WALL
 
-
         if self.new_direction == CFG.LEFT and IsWallOnTheLeft is False and (
                 self.current_row % 1.0 == 0):
 
@@ -39,7 +38,6 @@ class MovingObject(GameObject):
             return True
         else:
             return False
-
 
     def checkIfWallInFront(self, col, row, game_board):
         IsWallAbove = game_board.getTileValue(col, row - 1) == CFG.WALL

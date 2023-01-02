@@ -40,12 +40,11 @@ clock = pygame.time.Clock()
 class Game:
 
     def __init__(self):
-        self.pressed_button_buffer = None
+       # self.pressed_button_buffer = None
         self.game_ticks = 0
-        self.current_amount_of_active_ghosts = 0
+        #self.current_amount_of_active_ghosts = 0
         self.render_system = RenderSystem(game_board, screen)
         self.game_manager = GameManager(ghosts, ghosts[0], pacman, self.render_system, game_board, self.game_ticks)
-
 
     def runGame(self):
 
@@ -95,12 +94,8 @@ class Game:
                 self.render_system.renderGhosts(ghosts)
 
 
-
-                # rs.drawGrid()
-
                 if (pacman.move(game_board) == CFG.CROSSED_TUNNEL):
                     self.render_system.renderTunnelEnds()
-
 
                 if (pacman.IsAlive == False):
                     self.game_manager.restartGameWhenDead()
@@ -110,8 +105,6 @@ class Game:
 
                     self.game_manager.startNextLevel()
 
-
-
             pacman.collectPellet(game_board)
             pacman.eatPowerPill(game_board)
             self.game_manager.powerPillUsing()
@@ -120,7 +113,6 @@ class Game:
             clock.tick(CFG.GAME_FPS)
 
             self.game_manager.game_ticks += 1
-
 
 
 game = Game()

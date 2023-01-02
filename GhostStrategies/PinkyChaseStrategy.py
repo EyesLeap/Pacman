@@ -1,4 +1,3 @@
-from GhostStrategies.GhostStrategy import GhostStrategy
 from GhostStrategies.ChaseStrategy import ChaseStrategy
 import ConstantsForGame as CFG
 

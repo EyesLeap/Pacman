@@ -4,7 +4,6 @@ import ConstantsForGame as CFG
 
 class GhostSprite (pygame.sprite.Sprite):
 
-
     def __init__(self, sprite_location, ghost_type, normal_sprite_state):
         self.normal_sprite_state = normal_sprite_state  # Normal sprite when SCATTER_MODE/CHASE_MODE on
         self.normalSpriteFLag = 0
@@ -14,8 +13,6 @@ class GhostSprite (pygame.sprite.Sprite):
         self.image = pygame.image.load(sprite_location)
         self.image = pygame.transform.scale(self.image, (CFG.SQUARE_SIZE * 1.5, CFG.SQUARE_SIZE * 1.5))
         self.current_sprite = None
-
-
 
     def newDirectionSpriteChange(self, new_direction):
 
@@ -33,7 +30,6 @@ class GhostSprite (pygame.sprite.Sprite):
         elif new_direction == CFG.RIGHT:
             self.normal_sprite_state = CFG.GHOST_SPRITE_RIGHT
 
-
     def switchNormalSpriteFlag(self):
 
         if self.normalSpriteFLag == 0:
@@ -43,7 +39,6 @@ class GhostSprite (pygame.sprite.Sprite):
         elif self.normalSpriteFLag == 1:
             self.normal_sprite_state -= 1
             self.normalSpriteFLag = 0
-
 
     def switchFrightenedSpriteState(self, IsPowerPillEnding):
 
@@ -64,9 +59,6 @@ class GhostSprite (pygame.sprite.Sprite):
         elif self.frightened_sprite_state == 2:
             self.frightened_sprite_state = 1
 
-
-
-
     def changeOnNormal(self):
         self.switchNormalSpriteFlag()
 
@@ -83,18 +75,14 @@ class GhostSprite (pygame.sprite.Sprite):
         self.setCurrentImage(sprite_name, self.normal_sprite_state)
 
     def changeOnFrightened(self, IsPowerPillEnding):
-
         self.switchFrightenedSpriteState(IsPowerPillEnding)
-
         sprite_name = "frightened_ghost"
         self.setCurrentImage(sprite_name, self.frightened_sprite_state)
-
 
 
     def changeOnEaten(self):
         sprite_name = "eaten_ghost"
         self.setCurrentImage(sprite_name, 1)
-
 
     def setCurrentImage(self, sprite_name, sprite_state):
         self.image = pygame.image.load(f"GhostsSprites/{sprite_name} ({sprite_state}).png")

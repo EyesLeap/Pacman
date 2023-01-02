@@ -5,7 +5,6 @@ import ConstantsForGame as CFG
 from MovingObject import MovingObject
 from MusicSystem import MusicSystem
 
-
 class Pacman(MovingObject):
 
     def __init__(self):
@@ -30,7 +29,6 @@ class Pacman(MovingObject):
         self.powerPillActivated = False
         self.IsPowerPillEnding = False
         self.power_pill_timer = 0
-
 
     def placeOnStartPosition(self):
         self.current_column = 13.5
@@ -71,6 +69,7 @@ class Pacman(MovingObject):
 
             self.current_score += 10
             MusicSystem.playMunchSound()
+
     def eatPowerPill(self, game_board):
         self.calculateRoundedColumnRow()
 
@@ -82,8 +81,8 @@ class Pacman(MovingObject):
             self.power_pill_timer = 0
 
             MusicSystem.playMunchSound()
+
     def eatGhost(self, ghost):
-        print("СЪЕЕЕЕЕЕЕЕЕЕЕЕЛ!!!!!!!!!!!", ghost.ghost_type)
         if ghost.IsFrightened and ghost.strategy_index != CFG.GHOST_EATEN_STRATEGY\
                 and ghost.strategy_index != CFG.GHOST_ENTERING_CAGE_STRATEGY:
             self.current_score += 200
@@ -98,6 +97,7 @@ class Pacman(MovingObject):
             self.changeSpriteStateWhenAlive()
         else:
             self.animatePacmanDeath()
+
     def changeSpriteStateWhenAlive(self):
 
         if self.sprite_state == CFG.PACMAN_MOUTH_CLOSED:
@@ -128,7 +128,6 @@ class Pacman(MovingObject):
 
 
         self.setCurrentSprite(sprite_name, self.sprite_state)
-
 
     def setCurrentSprite(self, sprite_name, sprite_state):
         self.pacman_sprite = pygame.image.load(f"Assets/PacmanSprites/{sprite_name} ({sprite_state}).png")

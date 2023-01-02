@@ -1,9 +1,7 @@
 from GhostStrategies.GhostStrategy import GhostStrategy
 import ConstantsForGame as CFG
 
-
 class ReleasingGhostStrategy(GhostStrategy):
-
 
     def execute(self, ghost, game_board):
         exit_point = (13.5, 14)
@@ -24,9 +22,9 @@ class ReleasingGhostStrategy(GhostStrategy):
 
                 ghost.strategy_index = CFG.GHOST_SCATTER_STRATEGY
 
+
         elif ghost.ghost_type == CFG.CYAN_GHOST:
             if (ghost_coords != exit_point):
-                print("ВОООТ: ", ghost.release_state)
                 ghost.current_column = CFG.CYAN_GHOST_ROUTE[ghost.release_state][0]
                 ghost.current_row = CFG.CYAN_GHOST_ROUTE[ghost.release_state][1]
                 ghost.release_state += 1
@@ -37,6 +35,7 @@ class ReleasingGhostStrategy(GhostStrategy):
                     return
                 ghost.strategy_index = CFG.GHOST_SCATTER_STRATEGY
 
+
         elif ghost.ghost_type == CFG.PINK_GHOST:
             if (ghost_coords != exit_point):
 
@@ -44,12 +43,12 @@ class ReleasingGhostStrategy(GhostStrategy):
                 ghost.current_row = CFG.PINK_GHOST_ROUTE[ghost.release_state][1]
                 ghost.release_state += 1
             else:
-                #print("ВОООТ: ", ghost.release_state)
                 ghost.release_state = CFG.FULLY_RELEASED
                 if ghost.IsFrightened:
                     ghost.strategy_index = CFG.GHOST_FRIGHTENED_STRATEGY
                     return
                 ghost.strategy_index = CFG.GHOST_SCATTER_STRATEGY
+
 
         elif ghost.ghost_type == CFG.RED_GHOST:
             if (ghost_coords != exit_point):

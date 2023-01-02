@@ -1,7 +1,6 @@
 import ConstantsForGame as CFG
 import math
 
-
 class GameObject:
 
     def __init__(self, col, row):

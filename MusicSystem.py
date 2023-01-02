@@ -44,7 +44,6 @@ class MusicSystem:
             MusicSystem.IsSirenMusicPlaying = False
             MusicSystem.IsPowerPillMusicPlaying = True
 
-
     @staticmethod
     def playPacmanDeathSound():
         MusicSystem.IsSirenMusicPlaying = False

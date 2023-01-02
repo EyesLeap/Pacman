@@ -49,7 +49,7 @@ class Ghost(MovingObject):
             self.current_direction = CFG.LEFT
 
             self.strategy_index = CFG.GHOST_SCATTER_STRATEGY
-            # self.setStrategy(ScatterInCornersStrategy())
+
 
         elif self.ghost_type == CFG.CYAN_GHOST:
 
@@ -62,8 +62,6 @@ class Ghost(MovingObject):
                                                          (int(CFG.SQUARE_SIZE * 3 / 2), int(CFG.SQUARE_SIZE * 3 / 2)))
             self.current_direction = CFG.UP
             self.strategy_index = CFG.GHOST_CAGE_STRATEGY
-
-            #self.strategy_index = CFG.GHOST_INKY_CHASE_STRATEGY
 
         elif self.ghost_type == CFG.ORANGE_GHOST:
 
@@ -105,7 +103,6 @@ class Ghost(MovingObject):
             self.current_sprite_state = CFG.GHOST_SPRITE_RIGHT
             self.spriteAnimationFlag = 1
 
-
     def animateGhost(self, IsPowerPillEnding):
         if self.strategy_index == CFG.GHOST_EATEN_STRATEGY or self.strategy_index == CFG.GHOST_ENTERING_CAGE_STRATEGY:
             self.sprite.changeOnEaten()
@@ -139,10 +136,6 @@ class Ghost(MovingObject):
             sprite_name = "pink_ghost"
 
         self.changeSprite(sprite_name, self.current_sprite_state)
-
-
-
-
 
     def changeSprite(self, sprite_name, sprite_state):
         self.current_sprite = pygame.image.load(f"GhostsSprites/{sprite_name} ({sprite_state}).png")
@@ -204,12 +197,7 @@ class Ghost(MovingObject):
             if self.checkIfWallInFront(self.rounded_column, self.rounded_row, game_board) is False:
                 self.changePositionBySpeed(self.speed)
 
-    # Executing current Strategy
-
-
-
     def setStrategy(self, _strategy):
-
         self.strategy = _strategy
 
     def setGhostStrategyIndexToChase(self):
@@ -227,8 +215,6 @@ class Ghost(MovingObject):
 
     def setGhostStrategyIndexToScatter(self):
         self.strategy_index = CFG.GHOST_SCATTER_STRATEGY
-
-
 
     def convertDirectionToConstant(self, direction):
 
@@ -296,5 +282,4 @@ class Ghost(MovingObject):
             else:
                 break
 
-            # print(self.cur_dir)
         return calculated_direction

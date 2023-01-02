@@ -1,4 +1,3 @@
-from GhostStrategies.GhostStrategy import GhostStrategy
 from GhostStrategies.ChaseStrategy import ChaseStrategy
 import ConstantsForGame as CFG
 
@@ -6,7 +5,6 @@ class ClydeChaseStrategy(ChaseStrategy):
 
     def __init__(self, _pacman):
         self.pacman = _pacman
-
 
     def execute(self, ghost, game_board):
         distanceBetweenGhostPacman = ghost.calculateDistanceBetweenObjects(ghost.current_column,
