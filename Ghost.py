@@ -125,16 +125,13 @@ class Ghost(MovingObject):
         self.changeCurrentSprite()
 
     def changeCurrentSprite(self):
-        sprite_name = "red_ghost"
-        if self.ghost_type == CFG.RED_GHOST:
-            sprite_name = "red_ghost"
-        elif self.ghost_type == CFG.CYAN_GHOST:
-            sprite_name = "cyan_ghost"
-        elif self.ghost_type == CFG.ORANGE_GHOST:
-            sprite_name = "orange_ghost"
-        elif self.ghost_type == CFG.PINK_GHOST:
-            sprite_name = "pink_ghost"
-
+        sprite_names = {
+            CFG.RED_GHOST: "red_ghost",
+            CFG.CYAN_GHOST: "cyan_ghost",
+            CFG.ORANGE_GHOST: "orange_ghost",
+            CFG.PINK_GHOST: "pink_ghost"
+        }
+        sprite_name = sprite_names.get(self.ghost_type, "red_ghost")
         self.changeSprite(sprite_name, self.current_sprite_state)
 
     def changeSprite(self, sprite_name, sprite_state):
