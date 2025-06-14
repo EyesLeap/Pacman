@@ -199,17 +199,14 @@ class Ghost(MovingObject):
         self.strategy = _strategy
 
     def setGhostStrategyIndexToChase(self):
-        if self.ghost_type == CFG.RED_GHOST:
-            self.strategy_index = CFG.GHOST_BLINKY_CHASE_STRATEGY
+        chase_strategies = {
+            CFG.RED_GHOST: CFG.GHOST_BLINKY_CHASE_STRATEGY,
+            CFG.PINK_GHOST: CFG.GHOST_PINKY_CHASE_STRATEGY,
+            CFG.CYAN_GHOST: CFG.GHOST_INKY_CHASE_STRATEGY,
+            CFG.ORANGE_GHOST: CFG.GHOST_CLYDE_CHASE_STRATEGY,
+        }
 
-        elif self.ghost_type == CFG.PINK_GHOST:
-            self.strategy_index = CFG.GHOST_PINKY_CHASE_STRATEGY
-
-        elif self.ghost_type == CFG.CYAN_GHOST:
-            self.strategy_index = CFG.GHOST_INKY_CHASE_STRATEGY
-
-        elif self.ghost_type == CFG.ORANGE_GHOST:
-            self.strategy_index = CFG.GHOST_CLYDE_CHASE_STRATEGY
+        self.strategy_index = chase_strategies.get(self.ghost_type)
 
     def setGhostStrategyIndexToScatter(self):
         self.strategy_index = CFG.GHOST_SCATTER_STRATEGY
