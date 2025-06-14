@@ -156,17 +156,13 @@ class Ghost(MovingObject):
         self.changeSprite(sprite_name, self.frightened_sprite_state)
 
     def chooseCornerToMove(self):
-        corner = None
-        if self.ghost_type == CFG.RED_GHOST:
-            corner = CFG.RIGHT_UPPER_CORNER
-        elif self.ghost_type == CFG.CYAN_GHOST:
-            corner = CFG.RIGHT_BOTTOM_CORNER
-        elif self.ghost_type == CFG.ORANGE_GHOST:
-            corner = CFG.LEFT_BOTTOM_CORNER
-        elif self.ghost_type == CFG.PINK_GHOST:
-            corner = CFG.LEFT_UPPER_CORNER
-
-        return corner
+        corners = {
+            CFG.RED_GHOST: CFG.RIGHT_UPPER_CORNER,
+            CFG.CYAN_GHOST: CFG.RIGHT_BOTTOM_CORNER,
+            CFG.ORANGE_GHOST: CFG.LEFT_BOTTOM_CORNER,
+            CFG.PINK_GHOST: CFG.LEFT_UPPER_CORNER,
+        }
+        return corners.get(self.ghost_type)
 
     def frightenedModeInvertCheck(self, game_board):
         if self.strategy_index != CFG.GHOST_FRIGHTENED_STRATEGY:
