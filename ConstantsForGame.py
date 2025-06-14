@@ -117,6 +117,44 @@ original_game_board = [
         [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
     ]
 
+GHOST_START_PARAMS = {
+    RED_GHOST: {
+        "position": (13.5, 14),
+        "sprite_name": "red_ghost",
+        "sprite_state": 5,
+        "direction": LEFT,
+        "strategy": GHOST_SCATTER_STRATEGY,
+        "sprite_file_index": 5,
+    },
+    CYAN_GHOST: {
+        "position": (11.5, 17),
+        "sprite_name": "cyan_ghost",
+        "sprite_state": 7,
+        "direction": UP,
+        "strategy": GHOST_CAGE_STRATEGY,
+        "sprite_file_index": 7,
+    },
+    ORANGE_GHOST: {
+        "position": (13.5, 17),
+        "sprite_name": "orange_ghost",
+        "sprite_state": 3,
+        "direction": DOWN,
+        "strategy": GHOST_CAGE_STRATEGY,
+        "sprite_file_index": 3,
+    },
+    PINK_GHOST: {
+        "position": (15.5, 17),
+        "sprite_name": "pink_ghost",
+        "sprite_state": 7,
+        "direction": UP,
+        "strategy": GHOST_CAGE_STRATEGY,
+        "sprite_file_index": 7,
+    },
+}
+
+
+
+
 #When leaving their cage, the ghosts move along a certain route:
 
 RED_GHOST_ROUTE = [()] * 25

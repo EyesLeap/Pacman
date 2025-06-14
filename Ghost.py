@@ -36,58 +36,23 @@ class Ghost(MovingObject):
         self.frightened_sprite_state = 1
 
     def setStartPosition(self):
+        params = CFG.GHOST_START_PARAMS.get(self.ghost_type)
+        if not params:
+            return
 
-        if self.ghost_type == CFG.RED_GHOST:
+        self.current_column, self.current_row = params["position"]
+        sprite_path = f"GhostsSprites/{params['sprite_name']} ({params['sprite_file_index']}).png"
+        self.sprite = GhostSprite(sprite_path, self.ghost_type, params["sprite_file_index"])
+        self.current_sprite_state = params["sprite_state"]
 
-            self.current_column = 13.5
-            self.current_row = 14
-            self.sprite = GhostSprite(f"GhostsSprites/red_ghost (5).png", self.ghost_type, 5)
-            self.current_sprite_state = 5
-            self.current_sprite = pygame.image.load(f"GhostsSprites/red_ghost (5).png")
-            self.current_sprite = pygame.transform.scale(self.current_sprite,
-                                                         (int(CFG.SQUARE_SIZE * 3 / 2), int(CFG.SQUARE_SIZE * 3 / 2)))
-            self.current_direction = CFG.LEFT
+        self.current_sprite = pygame.image.load(sprite_path)
+        self.current_sprite = pygame.transform.scale(
+            self.current_sprite,
+            (int(CFG.SQUARE_SIZE * 3 / 2), int(CFG.SQUARE_SIZE * 3 / 2))
+        )
 
-            self.strategy_index = CFG.GHOST_SCATTER_STRATEGY
-
-
-        elif self.ghost_type == CFG.CYAN_GHOST:
-
-            self.current_column = 11.5
-            self.current_row = 17
-            self.sprite = GhostSprite(f"GhostsSprites/cyan_ghost (7).png", self.ghost_type, 7)
-            self.current_sprite_state = 7
-            self.current_sprite = pygame.image.load(f"GhostsSprites/cyan_ghost (7).png")
-            self.current_sprite = pygame.transform.scale(self.current_sprite,
-                                                         (int(CFG.SQUARE_SIZE * 3 / 2), int(CFG.SQUARE_SIZE * 3 / 2)))
-            self.current_direction = CFG.UP
-            self.strategy_index = CFG.GHOST_CAGE_STRATEGY
-
-        elif self.ghost_type == CFG.ORANGE_GHOST:
-
-            self.current_column = 13.5
-            self.current_row = 17
-            self.sprite = GhostSprite(f"GhostsSprites/orange_ghost (3).png", self.ghost_type, 3)
-            self.current_sprite_state = 3
-            self.current_sprite = pygame.image.load(f"GhostsSprites/orange_ghost (3).png")
-            self.current_sprite = pygame.transform.scale(self.current_sprite,
-                                                         (int(CFG.SQUARE_SIZE * 3 / 2), int(CFG.SQUARE_SIZE * 3 / 2)))
-            self.current_direction = CFG.DOWN
-            self.strategy_index = CFG.GHOST_CAGE_STRATEGY
-
-
-
-        elif self.ghost_type == CFG.PINK_GHOST:
-
-            self.current_column = 15.5
-            self.current_row = 17
-            self.sprite = GhostSprite(f"GhostsSprites/pink_ghost (7).png", self.ghost_type, 7)
-            self.current_sprite_state = 7
-            self.current_sprite = pygame.image.load(f"GhostsSprites/pink_ghost (7).png")
-            self.current_sprite = pygame.transform.scale(self.current_sprite,
-                                                         (int(CFG.SQUARE_SIZE * 3 / 2), int(CFG.SQUARE_SIZE * 3 / 2)))
-            self.current_direction = CFG.UP
-            self.strategy_index = CFG.GHOST_CAGE_STRATEGY
+        self.current_direction = params["direction"]
+        self.strategy_index = params["strategy"]
 
     def changeSpriteState(self):
         direction_to_sprite = {
