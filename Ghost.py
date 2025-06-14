@@ -88,19 +88,16 @@ class Ghost(MovingObject):
                                                          (int(CFG.SQUARE_SIZE * 3 / 2), int(CFG.SQUARE_SIZE * 3 / 2)))
             self.current_direction = CFG.UP
             self.strategy_index = CFG.GHOST_CAGE_STRATEGY
-    def changeSpriteState(self):
 
-        if self.new_direction == CFG.UP:
-            self.current_sprite_state = CFG.GHOST_SPRITE_UP
-            self.spriteAnimationFlag = 1
-        elif self.new_direction == CFG.LEFT:
-            self.current_sprite_state = CFG.GHOST_SPRITE_LEFT
-            self.spriteAnimationFlag = 1
-        elif self.new_direction == CFG.DOWN:
-            self.current_sprite_state = CFG.GHOST_SPRITE_DOWN
-            self.spriteAnimationFlag = 1
-        elif self.new_direction == CFG.RIGHT:
-            self.current_sprite_state = CFG.GHOST_SPRITE_RIGHT
+    def changeSpriteState(self):
+        direction_to_sprite = {
+            CFG.UP: CFG.GHOST_SPRITE_UP,
+            CFG.LEFT: CFG.GHOST_SPRITE_LEFT,
+            CFG.DOWN: CFG.GHOST_SPRITE_DOWN,
+            CFG.RIGHT: CFG.GHOST_SPRITE_RIGHT,
+        }
+        if self.new_direction in direction_to_sprite:
+            self.current_sprite_state = direction_to_sprite[self.new_direction]
             self.spriteAnimationFlag = 1
 
     def animateGhost(self, IsPowerPillEnding):
