@@ -215,17 +215,12 @@ class Ghost(MovingObject):
         self.strategy_index = CFG.GHOST_SCATTER_STRATEGY
 
     def convertDirectionToConstant(self, direction):
-
-        if direction == 1:
-            return CFG.UP
-        elif direction == 2:
-            return CFG.LEFT
-        elif direction == 3:
-            return CFG.DOWN
-        elif direction == 4:
-            return CFG.RIGHT
-        else:
-            return None
+        return {
+            1: CFG.UP,
+            2: CFG.LEFT,
+            3: CFG.DOWN,
+            4: CFG.RIGHT
+        }.get(direction)
 
     def calculateDistancesToTarget(self, target, distances_to_target, game_board):
         target_col, target_row = target
