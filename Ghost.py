@@ -147,7 +147,6 @@ class Ghost(MovingObject):
         self.changeSprite(sprite_name, 1)
 
     def changeFrightenedSpriteState(self):
-
         if self.frightened_sprite_state == 1:
             self.frightened_sprite_state = 2
         elif self.frightened_sprite_state == 2:
@@ -157,7 +156,6 @@ class Ghost(MovingObject):
         self.changeSprite(sprite_name, self.frightened_sprite_state)
 
     def chooseCornerToMove(self):
-
         corner = None
         if self.ghost_type == CFG.RED_GHOST:
             corner = CFG.RIGHT_UPPER_CORNER
@@ -230,36 +228,23 @@ class Ghost(MovingObject):
             return None
 
     def calculateDistancesToTarget(self, target, distances_to_target, game_board):
-        target_col, target_row = target[0], target[1]
+        target_col, target_row = target
 
-        IsWallAbove = (game_board.getTileValue(self.rounded_column, self.rounded_row - 1) == CFG.WALL)
-        IsWallOnTheLeft = (game_board.getTileValue(self.rounded_column - 1, self.rounded_row) == CFG.WALL)
-        IsWallBelow = (game_board.getTileValue(self.rounded_column, self.rounded_row + 1) == CFG.WALL)
-        IsWallOnTheRight = (game_board.getTileValue(self.rounded_column + 1, self.rounded_row) == CFG.WALL)
+        directions = {
+            0: (0, -1),  # Up
+            1: (-1, 0),  # Left
+            2: (0, 1),  # Down
+            3: (1, 0)  # Right
+        }
 
+        for index, (dx, dy) in directions.items():
+            new_col = self.rounded_column + dx
+            new_row = self.rounded_row + dy
 
-        if IsWallAbove is False:
-            distances_to_target[0]['distance'] = self.calculateDistanceBetweenObjects(self.rounded_column,
-                                                                                      self.rounded_row - 1,
-                                                                                      target_col,
-                                                                                      target_row)
-        if IsWallOnTheLeft is False:
-            distances_to_target[1]['distance'] = self.calculateDistanceBetweenObjects(self.rounded_column - 1,
-                                                                                      self.rounded_row,
-                                                                                      target_col,
-                                                                                      target_row)
-
-        if IsWallBelow is False:
-            distances_to_target[2]['distance'] = self.calculateDistanceBetweenObjects(self.rounded_column,
-                                                                                      self.rounded_row + 1,
-                                                                                      target_col,
-                                                                                      target_row)
-
-        if IsWallOnTheRight is False:
-            distances_to_target[3]['distance'] = self.calculateDistanceBetweenObjects(self.rounded_column + 1,
-                                                                                      self.rounded_row,
-                                                                                      target_col,
-                                                                                      target_row)
+            if game_board.getTileValue(new_col, new_row) != CFG.WALL:
+                distances_to_target[index]['distance'] = self.calculateDistanceBetweenObjects(
+                    new_col, new_row, target_col, target_row
+                )
 
         return distances_to_target
 
