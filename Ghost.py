@@ -104,7 +104,7 @@ class Ghost(MovingObject):
             self.spriteAnimationFlag = 1
 
     def animateGhost(self, IsPowerPillEnding):
-        if self.strategy_index == CFG.GHOST_EATEN_STRATEGY or self.strategy_index == CFG.GHOST_ENTERING_CAGE_STRATEGY:
+        if self.strategy_index in (CFG.GHOST_EATEN_STRATEGY, CFG.GHOST_ENTERING_CAGE_STRATEGY):
             self.sprite.changeOnEaten()
         elif self.IsFrightened:
             self.sprite.changeOnFrightened(IsPowerPillEnding)
@@ -112,13 +112,11 @@ class Ghost(MovingObject):
             self.sprite.changeOnNormal()
 
     def changeSpriteAnimationFlag(self):
-
         if self.spriteAnimationFlag == 1:
             self.current_sprite_state += 1
             self.spriteAnimationFlag = 2
 
         elif self.spriteAnimationFlag == 2:
-
             self.current_sprite_state -= 1
             self.spriteAnimationFlag = 1
 
